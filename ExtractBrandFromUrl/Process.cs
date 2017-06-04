@@ -1,35 +1,31 @@
-﻿using System;
 using System.Collections.Generic;
 
 namespace ExtractBrandFromUrl
 {
     class Process
     {
-        private List<string> Urls { get; set; }
+        
+        private List<string> _urls;
         public List<string> BrandTemplateUrls { get; private set; }
         public List<string> CleansedUrls { get; private set; }
 
-        public Process(List<string> csvUrls)
-        {
-            Urls = new List<string>(csvUrls);
-            CleansedUrls = new List<string>();
-        }
         public Process(List<string> csvUrls, List<string> csvBrandTemplate)
         {
-            Urls = new List<string>(csvUrls);
+            _urls = new List<string>(csvUrls);
             BrandTemplateUrls = new List<string>(csvBrandTemplate);
             CleansedUrls = new List<string>();
         }
 
+
         public void SeperateUrls()
         {
-            foreach (var line in Urls)
+            foreach (var line in _urls)
             {
                 var commaIndx = line.IndexOf(',');
                 if (commaIndx > -1)
                 {
                     var url = line.Substring(0, commaIndx);
-                    CleansedUrls.Add(url);
+                    CleansedUrls.Add(url.ToLower());
                 }
             }
         }
@@ -60,8 +56,8 @@ namespace ExtractBrandFromUrl
             {
                 if (!string.IsNullOrWhiteSpace(CleansedUrls[i]))
                 {
-                    var lastSlash = CleansedUrls[i].LastIndexOf('/');
-                    CleansedUrls[i] = CleansedUrls[i].Substring(lastSlash);
+                    var lastSlashIndx = CleansedUrls[i].LastIndexOf('/');
+                    CleansedUrls[i] = CleansedUrls[i].Substring(lastSlashIndx);
                 }
             }
         }
@@ -76,5 +72,6 @@ namespace ExtractBrandFromUrl
                 }
             }
         }
+
     }
 }
